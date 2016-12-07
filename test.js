@@ -106,6 +106,20 @@ describe('createRavenMiddleware', function () {
     _assert2['default'].equal(ravenSpy.args[0][1].extra.state, 'test');
   });
 
+  it('reports error and show report dialog', function () {
+    var actionTransformer = function actionTransformer(action) {
+      return action.error;
+    };
+    var stateTransformer = function stateTransformer(state) {
+      return state.test;
+    };
+    var cfg = {};
+    var opts = { dialog: true };
+    createRavenMiddleware('abc', cfg, opts)(stubStore)(mockNextHandler)({ error: true });
+
+    _assert2['default'].equal(document, '');
+  });
+
   it('logs via custom logger', function () {
     var logger = _sinon2['default'].spy();
     var cfg = {};

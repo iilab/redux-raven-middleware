@@ -52,6 +52,8 @@ function createMiddleware(dsn) {
         var stateTransformer = _options$stateTransformer === undefined ? identity : _options$stateTransformer;
         var _options$logger = options.logger;
         var logger = _options$logger === undefined ? console.error.bind(console, '[redux-raven-middleware] Reporting error to Sentry:') : _options$logger;
+        var _options$dialog = options.dialog;
+        var dialog = _options$dialog === undefined ? false : _options$dialog;
 
         try {
           _ravenJs2['default'].captureBreadcrumb({
@@ -70,6 +72,7 @@ function createMiddleware(dsn) {
               state: stateTransformer(store.getState())
             }
           });
+          if (dialog) _ravenJs2['default'].showReportDialog({ dsn: dsn, eventId: _ravenJs2['default'].lastEventId() });
         }
       };
     };

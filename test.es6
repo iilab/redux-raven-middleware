@@ -88,6 +88,16 @@ describe('createRavenMiddleware', () => {
     assert.equal(ravenSpy.args[0][1].extra.state, 'test');
   });
 
+  it('reports error and show report dialog', () => {
+    const actionTransformer = action => action.error
+    const stateTransformer = state => state.test
+    const cfg = {}
+    const opts = { dialog: true  }
+    createRavenMiddleware('abc', cfg, opts)(stubStore)(mockNextHandler)({error: true});
+
+    assert.equal(document, '')
+  });
+
   it('logs via custom logger', () => {
     const logger = sinon.spy()
     const cfg = {}

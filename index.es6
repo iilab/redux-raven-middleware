@@ -28,7 +28,8 @@ export default function createMiddleware(dsn, cfg={}, options={}) {
     const {
       actionTransformer = identity,
       stateTransformer = identity,
-      logger = console.error.bind(console, '[redux-raven-middleware] Reporting error to Sentry:')
+      logger = console.error.bind(console, '[redux-raven-middleware] Reporting error to Sentry:'),
+      dialog = false
     } = options;
     try {
       Raven.captureBreadcrumb({
@@ -47,6 +48,7 @@ export default function createMiddleware(dsn, cfg={}, options={}) {
           state: stateTransformer(store.getState()),
         }
       });
+      if (dialog) Raven.showReportDialog({ dsn, eventId: Raven.lastEventId() });
     }
   }
 }
